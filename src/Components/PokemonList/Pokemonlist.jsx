@@ -6,12 +6,20 @@ function PokemonList() {
   const [pokemonList, SetpokemonList] = useState([]);
   const [isloading, Setloading] = useState(true);
 
+  const [pokidexUrl, setpokidexUrl] = useState("https://pokeapi.co/api/v2/pokemon");
+
+  const [nextUrl, setnextUrl] = useState('');
+  const [prevUrl, setPrevUrl] = useState('');
+
   async function downloadpokemon() {
-    const response = await axios.get("https://pokeapi.co/api/v2/pokemon"); // this downloads list of 20 pokemons
+    Setloading(true);
+    const response = await axios.get(pokidexUrl); // this downloads list of 20 pokemons
 
     const pokemonResult = response.data.results; // we get the array of pokemons from result
 
     console.log(response.data);
+    setnextUrl(response.data.next);
+    setPrevUrl(response.data.previous);
 
     // iterating over the array of pokemons, and using their url to create an array of promises
     // that will download those 20 pokemons
@@ -41,7 +49,7 @@ function PokemonList() {
   }
   useEffect(() => {
     downloadpokemon();
-  }, []);
+  }, [pokidexUrl]);
 
   return (
     <div className="m-2 text-xl font-serif font-semibold flex flex-col items-center justify-center flex-wrap">
@@ -58,8 +66,8 @@ function PokemonList() {
       </div>
 
       <div className="text-white space-x-3">
-        <button className="border py-1 px-4 rounded border-red-800 shadow hover:border-teal-700 hover:shadow-teal-700 transition ease-linear duration-200 delay-150 shadow-red-800 focus:border-teal-700 focus:shadow-teal-700">Preview</button>
-        <button className="border py-1 px-4 rounded border-red-800 shadow hover:border-teal-700 hover:shadow-teal-700 transition ease-linear duration-200 delay-150 shadow-red-800 focus:border-teal-700 focus:shadow-teal-700">Next</button>
+        <button className="border py-1 px-4 rounded border-red-800 shadow hover:border-teal-700 hover:shadow-teal-700 transition ease-linear duration-200 delay-150 shadow-red-800 focus:border-teal-700 focus:shadow-teal-700 cursor-pointer" disabled = {prevUrl === null} onClick={() => setpokidexUrl(prevUrl)}>Preview</button>
+        <button className="border py-1 px-4 rounded border-red-800 shadow hover:border-teal-700 hover:shadow-teal-700 transition ease-linear duration-200 delay-150 shadow-red-800 focus:border-teal-700 focus:shadow-teal-700 cursor-pointer" disabled = {nextUrl === null} onClick={() => setpokidexUrl(nextUrl)}>Next</button>
       </div>
     </div>
   );
