@@ -56,7 +56,7 @@ function PokemonList() {
       <p className="text-center mb-[50px] font-bold text-4xl bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">Pokemon List</p>
 
       <div className="flex flex-wrap flex-row justify-around items-center w-[100%]">
-        <div className="flex flex-wrap flex-row justify-evenly gap-1 bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent"> 
+        <div className="flex flex-wrap flex-row justify-evenly gap-1 "> 
           {isloading
             ? "Loading...."
             : pokemonList.map((p) => (
