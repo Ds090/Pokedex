@@ -1,9 +1,9 @@
 // eslint-disable-next-line react/prop-types
 function Pokemon({ name, image }) {
     return (
-        <div>
-            <div>{name}</div>
-            <div><img src={image}/></div>
+        <div className="basis-[20%] h-[220px] w-[300px] flex flex-col items-center">
+            <div className="text-xl tracking-widest">{name}</div>
+            <div className="mt-[1rem]"><img src={image} className="max-h-[100%] h-[150px]"/></div>
         </div>
     )
 }

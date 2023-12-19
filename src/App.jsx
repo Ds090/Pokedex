@@ -5,11 +5,13 @@ import PokemonList from "./Components/PokemonList/Pokemonlist";
 
 function App() {
   return (
-    <div className="flex flex-col w-[500px] items-center justify-center">
+    <>
+    <div className="flex flex-col w-full items-center justify-center">
       <h1><Pokedex/></h1>
       <Search />
-      <PokemonList/>
     </div>
+    <div className=""><PokemonList/></div>
+    </>
   );
 }
 
