@@ -23,12 +23,12 @@ function PokemonDetails() {
 
   return (
     <div className="w-full h-screen flex justify-center items-center flex-col gap-5">
-        <div className="text-center font-bold text-4xl bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent h-[50px]">Name: {pokemon.name}</div>
         <img src={pokemon.image} alt="" />
+        <div className="text-center font-bold text-4xl bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent h-[50px]   tracking-widest font-serif">{pokemon.name}</div>
         <div className="text-center font-bold text-2xl bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">Height: {pokemon.height}</div>
         <div  className="text-center font-bold text-2xl bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">Weight: {pokemon.weight}</div>
-        <div  className="text-center font-bold text-2xl bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">
-            {pokemon.types && pokemon.types.map((t) => <div key={t}> {t} </div>)}
+        <div  className="text-center font-bold text-2xl bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent flex gap-5">
+            {pokemon.types && pokemon.types.map((t) => <div key={t} className="border rounded-md py-1 px-3 bg-gray-700 text-white"> {t} </div>)}
         </div>
 
     </div>
