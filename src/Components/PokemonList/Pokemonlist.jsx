@@ -4,23 +4,34 @@ import { useEffect, useState } from "react";
 import Pokemon from "../Pokemon/Pokemon";
 
 function PokemonList() {
-  const [pokemonList, SetpokemonList] = useState([]);
-  const [isloading, Setloading] = useState(true);
+  // const [pokemonList, SetpokemonList] = useState([]);
+  // const [isloading, Setloading] = useState(true);
 
-  const [pokidexUrl, setpokidexUrl] = useState("https://pokeapi.co/api/v2/pokemon");
+  // const [pokidexUrl, setpokidexUrl] = useState("https://pokeapi.co/api/v2/pokemon");
 
-  const [nextUrl, setnextUrl] = useState('');
-  const [prevUrl, setPrevUrl] = useState('');
+  // const [nextUrl, setnextUrl] = useState('');
+  // const [prevUrl, setPrevUrl] = useState('');
+
+  const [pokemonListstate, SetpokemonListstate] = useState({
+    pokemonList: [],
+    isloading: true,
+    pokidexUrl: "https://pokeapi.co/api/v2/pokemon",
+    nextUrl: "",
+    prevUrl: "",
+  });
 
   async function downloadpokemon() {
-    Setloading(true);
-    const response = await axios.get(pokidexUrl); // this downloads list of 20 pokemons
+    SetpokemonListstate((state) => ({ ...state, isloading: true }));
+    const response = await axios.get(pokemonListstate.pokidexUrl); // this downloads list of 20 pokemons
 
     const pokemonResult = response.data.results; // we get the array of pokemons from result
 
     console.log(response.data);
-    setnextUrl(response.data.next);
-    setPrevUrl(response.data.previous);
+    SetpokemonListstate( (state) => ({
+      ...state,
+      nextUrl: response.data.next,
+      prevUrl: response.data.previous,
+    }));
 
     // iterating over the array of pokemons, and using their url to create an array of promises
     // that will download those 20 pokemons
@@ -45,30 +56,53 @@ function PokemonList() {
       };
     });
     console.log(res);
-    SetpokemonList(res);
-    Setloading(false);
+    SetpokemonListstate((state) => ({
+      ...state,
+      pokemonList: res,
+      isloading: false,
+    }));
   }
   useEffect(() => {
     downloadpokemon();
-  }, [pokidexUrl]);
+  }, [pokemonListstate.pokidexUrl]);
 
   return (
     <div className="m-2 text-xl font-serif font-semibold flex flex-col items-center justify-center flex-wrap">
-      <p className="text-center mb-[50px] font-bold text-4xl bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">Pokemon List</p>
+      <p className="text-center mb-[50px] font-bold text-4xl bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">
+        Pokemon List
+      </p>
 
       <div className="flex flex-wrap flex-row justify-around items-center w-[100%]">
-        <div className="flex flex-wrap flex-row justify-evenly gap-1 "> 
-          {isloading
+        <div className="flex flex-wrap flex-row justify-evenly gap-1 ">
+          {pokemonListstate.isloading
             ? "Loading...."
-            : pokemonList.map((p) => (
-                <Pokemon name={p.name} image={p.image} key={p.id} id={p.id}/>
+            : pokemonListstate.pokemonList.map((p) => (
+                <Pokemon name={p.name} image={p.image} key={p.id} id={p.id} />
               ))}
         </div>
       </div>
 
       <div className="text-white space-x-3">
-        <button className="border py-1 px-4 rounded border-red-800 shadow hover:border-teal-700 hover:shadow-teal-700 transition ease-linear duration-200 delay-150 shadow-red-800 focus:border-teal-700 focus:shadow-teal-700 cursor-pointer" disabled = {prevUrl === null} onClick={() => setpokidexUrl(prevUrl)}>Preview</button>
-        <button className="border py-1 px-4 rounded border-red-800 shadow hover:border-teal-700 hover:shadow-teal-700 transition ease-linear duration-200 delay-150 shadow-red-800 focus:border-teal-700 focus:shadow-teal-700 cursor-pointer" disabled = {nextUrl === null} onClick={() => setpokidexUrl(nextUrl)}>Next</button>
+        <button
+          className="border py-1 px-4 rounded border-red-800 shadow hover:border-teal-700 hover:shadow-teal-700 transition ease-linear duration-200 delay-150 shadow-red-800 focus:border-teal-700 focus:shadow-teal-700 cursor-pointer"
+          disabled={pokemonListstate.prevUrl === null}
+          onClick={() => { 
+            const urltoset = pokemonListstate.prevUrl;
+            SetpokemonListstate({ ...pokemonListstate, pokidexUrl: urltoset})}
+          }
+        >
+          Preview
+        </button>
+        <button
+          className="border py-1 px-4 rounded border-red-800 shadow hover:border-teal-700 hover:shadow-teal-700 transition ease-linear duration-200 delay-150 shadow-red-800 focus:border-teal-700 focus:shadow-teal-700 cursor-pointer"
+          disabled={pokemonListstate.nextUrl === null}
+          onClick={() => {
+            const urltoset = pokemonListstate.nextUrl;
+             SetpokemonListstate({ ...pokemonListstate, pokidexUrl: urltoset})}
+            }
+        >
+          Next
+        </button>
       </div>
     </div>
   );
