@@ -1,70 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from "axios";
-import { useEffect, useState } from "react";
 import Pokemon from "../Pokemon/Pokemon";
+import usePokemonList from "../../hooks/usepokemonList";
 
 function PokemonList() {
-  // const [pokemonList, SetpokemonList] = useState([]);
-  // const [isloading, Setloading] = useState(true);
-
-  // const [pokidexUrl, setpokidexUrl] = useState("https://pokeapi.co/api/v2/pokemon");
-
-  // const [nextUrl, setnextUrl] = useState('');
-  // const [prevUrl, setPrevUrl] = useState('');
-
-  const [pokemonListstate, SetpokemonListstate] = useState({
-    pokemonList: [],
-    isloading: true,
-    pokidexUrl: "https://pokeapi.co/api/v2/pokemon",
-    nextUrl: "",
-    prevUrl: "",
-  });
-
-  async function downloadpokemon() {
-    SetpokemonListstate((state) => ({ ...state, isloading: true }));
-    const response = await axios.get(pokemonListstate.pokidexUrl); // this downloads list of 20 pokemons
-
-    const pokemonResult = response.data.results; // we get the array of pokemons from result
-
-    console.log(response.data);
-    SetpokemonListstate( (state) => ({
-      ...state,
-      nextUrl: response.data.next,
-      prevUrl: response.data.previous,
-    }));
-
-    // iterating over the array of pokemons, and using their url to create an array of promises
-    // that will download those 20 pokemons
-    const pokemonResultPromiss = pokemonResult.map((pokemon) =>
-      axios.get(pokemon.url)
-    );
-
-    // passing that promise array to axios.all
-    const pokemondata = await axios.all(pokemonResultPromiss); // array  of 20 pokemon details data
-    console.log(pokemondata);
-
-    // now iterate on the data of each pokemon, and extract id, name, image, types
-    const res = pokemondata.map((pokeData) => {
-      const pokemon = pokeData.data;
-      return {
-        id: pokemon.id,
-        name: pokemon.name,
-        image: pokemon.sprites.other
-          ? pokemon.sprites.other.dream_world.front_default
-          : pokemon.sprites.front_shiny,
-        types: pokemon.types,
-      };
-    });
-    console.log(res);
-    SetpokemonListstate((state) => ({
-      ...state,
-      pokemonList: res,
-      isloading: false,
-    }));
-  }
-  useEffect(() => {
-    downloadpokemon();
-  }, [pokemonListstate.pokidexUrl]);
+  
+  const [pokemonListstate, SetpokemonListstate] = usePokemonList(false);
 
   return (
     <div className="m-2 text-xl font-serif font-semibold flex flex-col items-center justify-center flex-wrap">
