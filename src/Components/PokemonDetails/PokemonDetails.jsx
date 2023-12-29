@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useParams } from "react-router-dom";
 import usePokemonDetails from "../../hooks/usepokemondetails";
 
-function PokemonDetails() {
+function PokemonDetails({pokemonName}) {
   const { id } = useParams();
-  const [pokemon] = usePokemonDetails(id);
+  const [pokemon] = usePokemonDetails(id, pokemonName);
 
   return (
     <div className="w-full h-full flex justify-center items-center flex-col gap-5">
@@ -36,7 +37,7 @@ function PokemonDetails() {
           <span className="text-2xl font-serif font-semibold bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">More {pokemon.types[0]} types pokemons</span>
 
           <ul className="text-xl font-mono font-semibold bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">
-            {pokemon.similer.map((p) => <li key={p.pokemon.id}>{p.pokemon.name}</li>)}
+            {pokemon.similer.map((p) => <li key={p.pokemon.url}>{p.pokemon.name}</li>)}
           </ul>
         </div>
       }
