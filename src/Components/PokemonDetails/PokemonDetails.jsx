@@ -33,8 +33,8 @@ function PokemonDetails({pokemonName}) {
 
       {
         pokemon.types && pokemon.similer && 
-        <div className="flex flex-col justify-center items-center gap-1">
-          <span className="text-2xl font-serif font-semibold bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">More {pokemon.types[0]} types pokemons</span>
+        <div className="flex flex-col justify-center items-center gap-1 w-full">
+          <span className="text-2xl font-serif font-semibold bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent text-center">More {pokemon.types[0]} types pokemons</span>
 
           <ul className="text-xl font-mono font-semibold bg-gradient-to-tr from-green-400 to-white bg-clip-text text-transparent">
             {pokemon.similer.map((p) => <li key={p.pokemon.url}>{p.pokemon.name}</li>)}
